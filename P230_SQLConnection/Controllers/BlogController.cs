@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using P230_SQLConnection.DAL;
+using P230_SQLConnection.Entities;
 
 namespace P230_SQLConnection.Controllers
 {
@@ -13,7 +15,18 @@ namespace P230_SQLConnection.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            List<Blog> blogs = _context.Blogs.Include(b=>b.Category).ToList();
+            return View(blogs);
+        }
+        public IActionResult Detail(int id)
+        {
+            if (id == 0) return NotFound();
+            Blog? blog = _context.Blogs.Include(b=>b.Category)
+                                            .Include(b=>b.BlogTags).ThenInclude(bt=>bt.Tag)
+                                                .SingleOrDefault(b => b.Id == id);
+
+            return View(blog);
         }
     }
+
 }

@@ -7,6 +7,15 @@
         public string Desc { get; set; }
         public string ImagePath { get; set; }
         public DateTime Date { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
         public List<Comment> Comments { get; set; }
+        public List<BlogTags> BlogTags { get; set; }
+
+        public Blog()
+        {
+            Category = new();
+            BlogTags = new();
+        }
     }
 }
